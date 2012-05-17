@@ -6,13 +6,16 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 
+import plugin1.CompositeTab;
+
 public class CompositeDelegate implements ILaunchConfigurationDelegate{
 
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		// TODO Auto-generated method stub
-		
+		for (ILaunchConfiguration lc : CompositeTab.collectLaunchConfigurations())
+			lc.launch(mode, monitor);
 	}
 
 }

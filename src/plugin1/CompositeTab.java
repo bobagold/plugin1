@@ -25,26 +25,33 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	public void createControl(Composite parent) {
 		// TODO Auto-generated method stub
 		control = new List(parent, SWT.SINGLE);
-		for (String lc : collectLaunchConfigurations())
+		for (String lc : collectLaunchConfigurationNames())
 			control.add("lc: " + lc);
 //		for (String lct : collectLaunchConfigurationTypes())
 //			control.add("lct: " + lct);
 	}
 
-	private String[] collectLaunchConfigurations() {
+	private String[] collectLaunchConfigurationNames() {
 		// TODO Auto-generated method stub
 		ArrayList<String> list = new ArrayList<String>();
+		for (ILaunchConfiguration lc : collectLaunchConfigurations())
+			list.add(lc.getName());
+		return list.toArray(new String[]{});
+	}
+	public static ILaunchConfiguration[] collectLaunchConfigurations() {
+		// TODO Auto-generated method stub
+		ArrayList<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		try {
 			for (ILaunchConfiguration lc : manager.getLaunchConfigurations())
 				if (!lc.getType().getName().equals("Composite"))
-					list.add(lc.getName());
+					list.add(lc);
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return list.toArray(new String[]{});
+		return list.toArray(new ILaunchConfiguration[]{});
 	}
 	private String[] collectLaunchConfigurationTypes() {
 		// TODO Auto-generated method stub
