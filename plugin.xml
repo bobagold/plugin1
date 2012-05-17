@@ -26,5 +26,22 @@
          </action>
       </actionSet>
    </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="com.gmail.bobagold.plugin1.CompositeDelegate"
+            id="plugin1.launchConfigurationType1"
+            modes="run"
+            name="Composite">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="plugin1.AbstractLaunchConfigurationTabGroup1"
+            id="plugin1.launchConfigurationTabGroup1"
+            type="plugin1.launchConfigurationType1">
+      </launchConfigurationTabGroup>
+   </extension>
 
 </plugin>
