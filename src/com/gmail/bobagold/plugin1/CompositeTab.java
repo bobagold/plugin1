@@ -1,6 +1,7 @@
 package com.gmail.bobagold.plugin1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -26,6 +27,7 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	private Control control;
 	private List list_from;
 	private List list_to;
+	private String[] saved_selection;
 
 	@Override
 	public void createControl(Composite parent) {
@@ -36,8 +38,6 @@ public class CompositeTab implements ILaunchConfigurationTab {
 		container.setLayout(layout);
 		// TODO Auto-generated method stub
 		list_from = new List(container, SWT.SINGLE);
-		for (String lc : collectLaunchConfigurationNames())
-			list_from.add("lc: " + lc);
 
 		Group buttons = new Group(container, 0);
 		buttons.setLayout(new GridLayout());
@@ -62,8 +62,17 @@ public class CompositeTab implements ILaunchConfigurationTab {
 //		for (String lct : collectLaunchConfigurationTypes())
 //			control.add("lct: " + lct);
 		list_to = new List(container, SWT.SINGLE);
-		list_to.add("ok");
 		control = container;
+	}
+
+	protected void fillControls() {
+		for (String lc : collectLaunchConfigurationNames())
+			list_from.add("lc: " + lc);
+		list_to.setItems(saved_selection);
+		for (String s : saved_selection)
+			if (list_from.indexOf(s) >= 0)
+				list_from.remove(s);
+
 	}
 
 	protected void refresh() {
@@ -120,6 +129,15 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		// TODO Auto-generated method stub
+		try {
+			ArrayList<String> defaults = new ArrayList<String>();
+			defaults.add("ok");
+			saved_selection = (String[])configuration.getAttribute("selection", defaults).toArray(new String[] {});
+			fillControls();
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -132,7 +150,9 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		// TODO Auto-generated method stub
-
+		ArrayList<String> selection = new ArrayList<String>();
+		for (String s : saved_selection) selection.add(s);
+		configuration.setAttribute("selection", selection);
 	}
 
 	@Override
@@ -156,7 +176,7 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	@Override
 	public boolean canSave() {
 		// TODO Auto-generated method stub
-		return false;
+		return !Arrays.equals(list_to.getItems(), saved_selection);
 	}
 
 	@Override
