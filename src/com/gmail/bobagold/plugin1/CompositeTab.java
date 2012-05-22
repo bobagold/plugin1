@@ -15,20 +15,33 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Layout;
 
 public class CompositeTab implements ILaunchConfigurationTab {
-	private List control;
+	private Control control;
 
 	@Override
 	public void createControl(Composite parent) {
+		Group container = new Group(parent, SWT.CENTER);
+		container.setText("Select desired launch configurations");
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		container.setLayout(layout);
 		// TODO Auto-generated method stub
-		control = new List(parent, SWT.SINGLE);
+		List list_from = new List(container, SWT.SINGLE);
 		for (String lc : collectLaunchConfigurationNames())
-			control.add("lc: " + lc);
+			list_from.add("lc: " + lc);
+
 //		for (String lct : collectLaunchConfigurationTypes())
 //			control.add("lct: " + lct);
+		List list_to = new List(container, SWT.SINGLE);
+		list_to.add("ok");
+		control = container;
 	}
 
 	private String[] collectLaunchConfigurationNames() {
