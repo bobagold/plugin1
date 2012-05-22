@@ -48,10 +48,7 @@ public class CompositeTab implements ILaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				for (String selection : list_to.getSelection()) {
-					list_from.add(selection);
-					list_to.remove(selection);
-				}
+				moveSelection(list_to, list_from);
 			}
 		});
 		to_to.setText("==>>");
@@ -59,10 +56,7 @@ public class CompositeTab implements ILaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				for (String selection : list_from.getSelection()) {
-					list_to.add(selection);
-					list_from.remove(selection);
-				}
+				moveSelection(list_from, list_to);
 			}
 		});
 //		for (String lct : collectLaunchConfigurationTypes())
@@ -70,6 +64,13 @@ public class CompositeTab implements ILaunchConfigurationTab {
 		list_to = new List(container, SWT.SINGLE);
 		list_to.add("ok");
 		control = container;
+	}
+
+	protected void refresh() {
+		// TODO Auto-generated method stub
+		list_from.pack(true);
+		list_to.pack(true);
+		control.pack(true);
 	}
 
 	private String[] collectLaunchConfigurationNames() {
@@ -192,6 +193,17 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private void moveSelection(List list_from, List list_to) {
+		String[] selected = list_from.getSelection();
+		for (String selection : selected) {
+			list_to.add(selection);
+			list_from.remove(selection);
+		}
+		list_from.setSelection(new String[] {});
+		list_to.setSelection(selected);
+		refresh();
 	}
 
 }
