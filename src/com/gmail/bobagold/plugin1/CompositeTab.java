@@ -2,9 +2,6 @@ package com.gmail.bobagold.plugin1;
 
 import java.util.ArrayList;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -14,32 +11,63 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.List;
 
 public class CompositeTab implements ILaunchConfigurationTab {
 	private Control control;
+	private List list_from;
+	private List list_to;
 
 	@Override
 	public void createControl(Composite parent) {
 		Group container = new Group(parent, SWT.CENTER);
 		container.setText("Select desired launch configurations");
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
+		layout.numColumns = 3;
 		container.setLayout(layout);
 		// TODO Auto-generated method stub
-		List list_from = new List(container, SWT.SINGLE);
+		list_from = new List(container, SWT.SINGLE);
 		for (String lc : collectLaunchConfigurationNames())
 			list_from.add("lc: " + lc);
 
+		Group buttons = new Group(container, 0);
+		buttons.setLayout(new GridLayout());
+		Button to_from = new Button(buttons, 0);
+		Button to_to = new Button(buttons, 0);
+		to_from.setText("<<==");
+		to_from.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				for (String selection : list_to.getSelection()) {
+					list_from.add(selection);
+					list_to.remove(selection);
+				}
+			}
+		});
+		to_to.setText("==>>");
+		to_to.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				for (String selection : list_from.getSelection()) {
+					list_to.add(selection);
+					list_from.remove(selection);
+				}
+			}
+		});
 //		for (String lct : collectLaunchConfigurationTypes())
 //			control.add("lct: " + lct);
-		List list_to = new List(container, SWT.SINGLE);
+		list_to = new List(container, SWT.SINGLE);
 		list_to.add("ok");
 		control = container;
 	}
