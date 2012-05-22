@@ -1,4 +1,4 @@
-package plugin1;
+package com.gmail.bobagold.plugin1;
 
 import java.util.ArrayList;
 

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Plugin1
 Bundle-SymbolicName: plugin1; singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: plugin1.Activator
+Bundle-Activator: com.gmail.bobagold.plugin1.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.debug.core,

@@ -1,4 +1,4 @@
-package plugin1;
+package com.gmail.bobagold.plugin1;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
