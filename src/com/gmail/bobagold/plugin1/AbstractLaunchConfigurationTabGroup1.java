@@ -1,4 +1,4 @@
-package plugin1;
+package com.gmail.bobagold.plugin1;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -8,6 +8,7 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
+
 
 public class AbstractLaunchConfigurationTabGroup1 extends
 		AbstractLaunchConfigurationTabGroup {

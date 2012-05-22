@@ -6,7 +6,6 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 
-import plugin1.CompositeTab;
 
 public class CompositeDelegate implements ILaunchConfigurationDelegate{
 
