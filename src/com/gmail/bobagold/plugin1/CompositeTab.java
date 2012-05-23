@@ -66,8 +66,8 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	}
 
 	protected void fillControls() {
-		for (String lc : collectLaunchConfigurationNames())
-			list_from.add("lc: " + lc);
+		for (ILaunchConfiguration lc : collectLaunchConfigurations())
+			list_from.add(toString(lc));
 		list_to.setItems(saved_selection);
 		for (String s : saved_selection)
 			if (list_from.indexOf(s) >= 0)
@@ -82,13 +82,6 @@ public class CompositeTab implements ILaunchConfigurationTab {
 		control.pack(true);
 	}
 
-	private String[] collectLaunchConfigurationNames() {
-		// TODO Auto-generated method stub
-		ArrayList<String> list = new ArrayList<String>();
-		for (ILaunchConfiguration lc : collectLaunchConfigurations())
-			list.add(lc.getName());
-		return list.toArray(new String[]{});
-	}
 	public static ILaunchConfiguration[] collectLaunchConfigurations() {
 		// TODO Auto-generated method stub
 		ArrayList<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
@@ -130,15 +123,21 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		// TODO Auto-generated method stub
 		try {
-			ArrayList<String> defaults = new ArrayList<String>();
-			defaults.add("ok");
-			saved_selection = (String[])configuration.getAttribute("selection", defaults).toArray(new String[] {});
+			saved_selection = unserializeLC(configuration);
+			System.out.println("Loaded");
+			for (String s : saved_selection) System.out.println(s);
 			fillControls();
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	}
+	public static String[] unserializeLC(ILaunchConfiguration configuration) throws CoreException {
+		ArrayList<String> defaults = new ArrayList<String>();
+//		defaults.add("ok");
+		String[] saved_selection = (String[])configuration.getAttribute("selection", defaults).toArray(new String[] {});
+		return saved_selection;
 	}
 
 	@Override
@@ -150,6 +149,9 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		// TODO Auto-generated method stub
+		System.out.println("Save");
+		saved_selection = list_to.getItems();
+		for (String s : saved_selection) System.out.println(s);
 		ArrayList<String> selection = new ArrayList<String>();
 		for (String s : saved_selection) selection.add(s);
 		configuration.setAttribute("selection", selection);
@@ -176,6 +178,7 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	@Override
 	public boolean canSave() {
 		// TODO Auto-generated method stub
+		System.out.println("CanSave: " + (!Arrays.equals(list_to.getItems(), saved_selection)));
 		return !Arrays.equals(list_to.getItems(), saved_selection);
 	}
 
@@ -224,6 +227,17 @@ public class CompositeTab implements ILaunchConfigurationTab {
 		list_from.setSelection(new String[] {});
 		list_to.setSelection(selected);
 		refresh();
+	}
+
+	public static ILaunchConfiguration getLC(String lc_name) {
+		// TODO Auto-generated method stub
+		for (ILaunchConfiguration i : collectLaunchConfigurations())
+			if (toString(i) == lc_name) return i;
+		return null;
+	}
+
+	public static String toString(ILaunchConfiguration lc) {
+		return "lc: " + lc.getName();
 	}
 
 }

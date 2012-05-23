@@ -13,8 +13,12 @@ public class CompositeDelegate implements ILaunchConfigurationDelegate{
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		// TODO Auto-generated method stub
-		for (ILaunchConfiguration lc : CompositeTab.collectLaunchConfigurations())
-			lc.launch(mode, monitor);
+		System.out.println("Launch");
+		for (String lc_name : CompositeTab.unserializeLC(configuration)) {
+			System.out.println(lc_name);
+			ILaunchConfiguration lc = CompositeTab.getLC(lc_name);
+			if (lc != null) lc.launch(mode, monitor);
+		}
 	}
 
 }
