@@ -28,6 +28,8 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	private List list_from;
 	private List list_to;
 	private String[] saved_selection;
+	private ILaunchConfiguration configuration;
+	private ILaunchConfigurationWorkingCopy lc_working_copy;
 
 	@Override
 	public void createControl(Composite parent) {
@@ -80,6 +82,7 @@ public class CompositeTab implements ILaunchConfigurationTab {
 		list_from.pack(true);
 		list_to.pack(true);
 		control.pack(true);
+		performApply(lc_working_copy);
 	}
 
 	public static ILaunchConfiguration[] collectLaunchConfigurations() {
@@ -127,6 +130,7 @@ public class CompositeTab implements ILaunchConfigurationTab {
 			System.out.println("Loaded");
 			for (String s : saved_selection) System.out.println(s);
 			fillControls();
+			this.configuration = configuration;
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -150,11 +154,12 @@ public class CompositeTab implements ILaunchConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		// TODO Auto-generated method stub
 		System.out.println("Save");
-		saved_selection = list_to.getItems();
+		String[] saved_selection = list_to.getItems();
 		for (String s : saved_selection) System.out.println(s);
 		ArrayList<String> selection = new ArrayList<String>();
 		for (String s : saved_selection) selection.add(s);
 		configuration.setAttribute("selection", selection);
+		this.lc_working_copy = configuration;
 	}
 
 	@Override
